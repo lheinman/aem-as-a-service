@@ -4,7 +4,7 @@ Details on how-to setup AEM as a Service on Linux. Used CentOS 7 and Ubuntu 17.0
 ## Pre-requisites
 1. AEM Installed on your server. Copy the path of the install (e.g: /mnt/crx)
 2. Java (atleast JRE) installed (To test if java is installed and the version, run this command `java -version`) 
-3. Start AEM (e.g `java -jar cq-quickstart-author-p4502.jar`) once. This will generate all the necessary folders, especially **/mnt/crx/crx-quickstart/bin** that is required by the scripts.
+3. Start AEM (e.g `java -jar author-p4502.jar`) once. This will generate all the necessary folders, especially **/aem/publish/crx-quickstart/bin** that is required by the scripts.
 4. Create a user who will have access to the service. (e.g: aem)
 
 ## Step-by-step guide
@@ -29,15 +29,15 @@ Details on how-to setup AEM as a Service on Linux. Used CentOS 7 and Ubuntu 17.0
 4. SCP these files to the server
    * Copy `aem` to `/usr/bin`
      * Example: From terminal on your desktop `$ scp <filename> user@1.1.1.1:/usr/bin/aem`
-   * Copy `aem.service` to `/etc/system.d/system` 
-     * Example: From terminal on your desktop `$ scp <filename> user@1.1.1.1:/etc/system.d/system/aem.system`
+   * Copy `aem.service` to `/etc/systemd/system` 
+     * Example: From terminal on your desktop `$ scp <filename> user@1.1.1.1:/etc/systemd/system/aem.system`
 5. SSH to your server
    * `ssh user@1.1.1.1`
 6. Give permissions to the files
    * `sudo chmod u+rwx /usr/bin/aem`
-   * `sudo chmod u+rw /etc/system.d/system/aem.service`
+   * `sudo chmod u+rw /etc/systemd/system/aem.service`
 7. Update 
-   * `cd /etc/system.d/system`
+   * `cd /etc/systemd/system`
    * `sudo systemctl enable aem.service`
 8. You can restart the server or run the below commands to start AEM. Make sure you run **Pre-requisite Step 2** before running this command.
 
@@ -66,16 +66,16 @@ There are several ways we can test if AEM is running with the above commands
 4. Test AEM in browser `http://<vm-ip-address>:4502` 
 
 ## Troubleshooting
-### Installing Oracle Java 8 Manually in Ubuntu 18x
-1. Download the `tar.gz` file "https://download.oracle.com/otn/java/jdk/8u231-b11/5b13a193868b4bf28bcb45c792fce896/jdk-8u 231-linux-x64.tar.gz" to your local machine. Downloading to your linux VM maybe not possible, as the above url needs a login.
+### Installing Oracle Java 11 Manually in Ubuntu 24x
+1. Download the `tar.gz` file "[https://download.oracle.com/otn/java/jdk/8u231-b11/5b13a193868b4bf28bcb45c792fce896/jdk-8u 231-linux-x64.tar.gz](https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html#license-lightbox)" to your local machine. Downloading to your linux VM maybe not possible, as the above url needs a login.
 2. Copy the file to the server using SCP
 3. Make a directory: `mkdir /opt/java`
-4. Install and copy: `sudo tar -zxf jdk-8u231-linux-x64.tar.gz -C /opt/java/`
-5. Update your environment to allow Java for all users. Run this command `sudo update-alternatives --install /usr/bin/java java /opt/java/jdk1.8.0_231/bin/java 1`
+4. Install and copy: `sudo tar -zxf jdk-11.0.23_linux-aarch64_bin.tar.gz -C /opt/java/`
+5. Update your environment to allow Java for all users. Run this command `sudo update-alternatives --install /usr/bin/java java /opt/java/jdk-11.0.23/bin/java 1`
 6. Add path to ".bashrc". Open to edit `sudo nano ~/.bashrc`
    - Add these lines to the end of the file:
      
-     `export JAVA_HOME=/opt/java/jdk1.8.0_231`
+     `export JAVA_HOME=/opt/java/jdk-11.0.23`
      
      `export PATH=${PATH}:${JAVA_HOME}/bin`
 
@@ -83,5 +83,5 @@ There are several ways we can test if AEM is running with the above commands
 1. If the command shows `active` and still AEM does not load (On a browser `http://localhost:4502`) then check the AEM logs. Path for the log file: `/<aem-folder>/crx-quickstart/logs/stdout.log` 
 
 ## Notes
-1. The example above was tested on CentOS 7 and Ubuntu 17x, 18x
-2. AEM 6.3 version was used. Although the above process should work for AEM 6.x
+1. The example above was tested on CentOS 7 and Ubuntu 24x, 18x
+2. AEM CS version was used. 
